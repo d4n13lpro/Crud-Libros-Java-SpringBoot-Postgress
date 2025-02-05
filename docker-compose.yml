@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15.2-alpine3.17
+    restart: always
+    env_file:
+      - .env  # Carga variables desde un archivo .env
+    ports:
+      - '5432:5432'
+    volumes:
+      - db_data:/var/lib/postgresql/data  # Persistencia de datos
+      - ./src/test/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+
+volumes:
+  db_data:  # Volumen para almacenar los datos de PostgreSQL
